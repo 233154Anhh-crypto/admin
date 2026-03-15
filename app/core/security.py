@@ -10,16 +10,16 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
+pwd_context = CryptContext(
+    schemes=["argon2", "bcrypt"],
+    deprecated="auto"
+)
 
 def hash_password(password: str) -> str:
     return pwd_context.hash(password[:72])
 
-
 def verify_password(plain: str, hashed: str) -> bool:
     return pwd_context.verify(plain, hashed)
-
 
 def create_access_token(data: dict):
     payload = data.copy()
